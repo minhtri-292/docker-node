@@ -25,7 +25,7 @@ pipeline {
 
         stage('ssh server') {
             steps {
-                sshagent(['ssh-server1']) {
+                sshagent(['ssh-server']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 whoami
                         ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 ' bash -s << 'ENDSSH
