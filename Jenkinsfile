@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        FOO = null
+        FOO = 'null'
     }
     stages {
         stage('checkout') {
@@ -28,6 +28,7 @@ pipeline {
         stage ("remove docker container") {
             steps{
                 script {
+                    FOO = 'hello'
                     sshagent(credentials: ['ssh-server']) {
                        FOO= sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker ps -q"
                     }
