@@ -30,7 +30,7 @@ pipeline {
                     whoami
                 '''
                 sshagent(['ssh-server1']) {
-                    sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker ps | tail -n 1 |awk "{print $1}"'
+                    sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker rm -f $(docker ps | tail -n 1 |awk "{print $1}")'
                     sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker run -d -p 3000:3000 ntminh/docker-node:v1'
                     sh '''
                         pwd
