@@ -39,9 +39,9 @@ pipeline {
                         if [[${CONTAINER}]];
                         then
                             docker rm -f ${CONTAINER}
-                            docker run -d -p 3000:3000 ntminh/docker-node:v1
+                            docker run -it -d -p 3000:3000 ntminh/docker-node:v1
                         else
-                            docker run -d -p 3000:3000 ntminh/docker-node:v1
+                            docker run -it -d -p 3000:3000 ntminh/docker-node:v1
                         fi
                             
                     ENDSSH'
