@@ -26,7 +26,7 @@ pipeline {
         stage('ssh server') {
             steps {
                 sh "whoami"
-                sshagent(['ssh-server']) {
+                sshagent(credentials: ['ssh-server']) {
                     sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 whoami"
                     sh '''
                         
