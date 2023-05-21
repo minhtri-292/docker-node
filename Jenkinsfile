@@ -25,20 +25,27 @@ pipeline {
 
         stage('ssh server') {
             steps {
+                sh '''
+                    pwd
+                    ls
+                    whoami
+                '''
                 sshagent(['ssh-server1']) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 ' bash -s << 'ENDSSH
-                        export CONTAINER= $(docker ps | sed -n 2p |awk "{print $1}")
-                        if [[${CONTAINER}]];
-                        then
-                            docker rm -f ${CONTAINER}
-                            docker run -it -d -p 3000:3000 ntminh/docker-node:v1
-                        else
-                            docker run -it -d -p 3000:3000 ntminh/docker-node:v1
-                        fi
+                    sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker container prune -f'
+                    sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker run -d -p 3000:3000 ntminh/docker-node:v1'
+                    // sh '''
+                    //     ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 ' bash -s << 'ENDSSH
+                    //     export CONTAINER= $(docker ps | sed -n 2p |awk "{print $1}")
+                    //     if [[${CONTAINER}]];
+                    //     then
+                    //         docker rm -f ${CONTAINER}
+                    //         docker run -it -d -p 3000:3000 ntminh/docker-node:v1
+                    //     else
+                    //         docker run -it -d -p 3000:3000 ntminh/docker-node:v1
+                    //     fi
                             
-                    ENDSSH'
-                    '''
+                    // ENDSSH'
+                    // '''
                     sh 'echo Done Hello 2'
             }
             }
