@@ -25,9 +25,11 @@ pipeline {
 
         stage('ssh server') {
             steps {
+                sh "whoami"
                 sshagent(['ssh-server']) {
+                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 whoami"
                     sh '''
-                        ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 whoami
+                        
                         ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 ' bash -s << 'ENDSSH
                         docker rm -f $(docker ps -q)
                         docker run -d -p 3000:3000 ntminh/docker-node:v1                          
