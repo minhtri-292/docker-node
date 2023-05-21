@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        FOO = null
+    }
     stages {
         stage('checkout') {
             steps {
@@ -22,14 +24,22 @@ pipeline {
                 }
             }
         }
-
+         
+        stage ("remove docker container") {
+            steps{
+                script {
+                    sshagent(credentials: ['ssh-server']) {
+                       FOO= sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker ps -q"
+                    }
+                }
+            }
+        }
         stage('ssh server') {
             steps {
                 sh "whoami"
                 sshagent(credentials: ['ssh-server']) {
                     sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 mkdir hello"
-                    def flag= ${sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker ps -q"}
-                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker rm -f ${flag}"
+                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker rm -f ${FOO}"
                     sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker run -d -p 3000:3000 ntminh/docker-node:v1  "
                 }
             }
