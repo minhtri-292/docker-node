@@ -28,9 +28,10 @@ pipeline {
         stage ("remove docker container") {
             steps{
                 script {
-                    FOO = 'hello'
+                    flag = 'hello2'
                     sshagent(credentials: ['ssh-server']) {
-                       FOO= sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker ps -q"
+                       def flag = sh (ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker ps -q)
+                       FOO= flag
                     }
                 }
             }
