@@ -36,9 +36,6 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 ' bash -s << 'ENDSSH
                         docker ps
                     ENDSSH'
-                        pwd
-                        ls
-                        whoami
                     '''
                     sh 'echo Done Hello 2'
             }
