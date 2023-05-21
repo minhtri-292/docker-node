@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     stages {
         stage('checkout') {
             steps {
@@ -34,7 +35,15 @@ pipeline {
                     // sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker run -d -p 3000:3000 ntminh/docker-node:v1'
                     sh '''
                         ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 ' bash -s << 'ENDSSH
-                        docker ps
+                        export CONTAINER= $(docker ps | sed -n 2p |awk "{print $1}")
+                        if [[${CONTAINER}]];
+                        then
+                            docker rm -f ${CONTAINER}
+                            docker run -d -p 3000:3000 ntminh/docker-node:v1
+                        else
+                            docker run -d -p 3000:3000 ntminh/docker-node:v1
+                        fi
+                            
                     ENDSSH'
                     '''
                     sh 'echo Done Hello 2'
