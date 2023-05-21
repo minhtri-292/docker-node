@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh "whoami"
                 sshagent(credentials: ['ssh-server']) {
-                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 whoami"
+                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 mkdir hello"
                     sh '''
                         
                         ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 ' bash -s << 'ENDSSH
