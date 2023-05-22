@@ -30,13 +30,13 @@ pipeline {
 
                 sshagent(credentials: ['ssh-server']) {
                     script {
-                            OlD_CONTAINER =sh (
-                                script : "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67  docker ps -q",
-                                returnStdout: true
-                            )
-                            sh "echo ${OlD_CONTAINER}"
+                            // OlD_CONTAINER =sh (
+                            //     script : "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67  docker ps -q",
+                            //     returnStdout: true
+                            // )
+                            // sh "echo ${OlD_CONTAINER}"
                             try {
-                                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67 docker rm -f ${OlD_CONTAINER}"
+                                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67 docker rm -f ${docker ps -q}"
                             } catch (Exception e) {
                                 echo 'Exception occurred: ' + e.toString()
                             } finally {
