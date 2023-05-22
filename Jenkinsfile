@@ -25,24 +25,24 @@ pipeline {
             }
         }
          
-        stage ("remove docker container") {
-            steps{
-                script {
-                    flag = 'hello2'
-                    sshagent(credentials: ['ssh-server']) {
-                       def flag = sh (ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker ps -q)
-                       FOO= flag
-                    }
-                }
-            }
-        }
         stage('ssh server') {
             steps {
-                sh "whoami"
-                sh "echo  ${FOO}"
+
                 sshagent(credentials: ['ssh-server']) {
-                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker rm -f ${FOO}"
-                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 44.211.146.100 docker run -d -p 3000:3000 ntminh/docker-node:v1  "
+                    script {
+                            OlD_CONTAINER =sh (
+                                script : "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67  docker ps -q",
+                                returnStdout: true
+                            )
+                            sh "echo ${OlD_CONTAINER}"
+                            try {
+                                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67 docker rm -f ${OlD_CONTAINER}"
+                            } catch (Exception e) {
+                                echo 'Exception occurred: ' + e.toString()
+                            } finally {
+                                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67 docker run -d -p 3000:3000 ntminh/docker-node:v1"
+                            }
+                        }
                 }
             }
         }
