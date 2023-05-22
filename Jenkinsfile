@@ -36,7 +36,7 @@ pipeline {
                             // )
                             // sh "echo ${OlD_CONTAINER}"
                             try {
-                                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67 docker rm -f ${docker ps -q}"
+                                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67 docker rm -f $(docker ps -q)"
                             } catch (Exception e) {
                                 echo 'Exception occurred: ' + e.toString()
                             } finally {
