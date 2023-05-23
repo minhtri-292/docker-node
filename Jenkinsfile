@@ -13,6 +13,7 @@ pipeline {
         stage('build image') {
             steps {
                 sh 'docker build -t ntminh/docker-node:v1 .'
+                sh 'echo Hello'
             }
         }
 
