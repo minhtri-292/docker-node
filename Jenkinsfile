@@ -38,6 +38,7 @@ pipeline {
                             )
                             sh "echo ${OlD_CONTAINER}"
                             try {
+                                sh "ssh -o StrictHostKeyChecking=no ubuntu@52.204.203.141 ntminh/docker-node:v1"
                                 sh "ssh -o StrictHostKeyChecking=no ubuntu@52.204.203.141 docker rm -f ${OlD_CONTAINER}"
                             } catch (Exception e) {
                                 echo 'Exception occurred: ' + e.toString()
