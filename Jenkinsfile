@@ -7,6 +7,7 @@ pipeline {
         stage('checkout') {
             steps {
                 checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/minhtri-292/docker-node.git']])
+                sh 'whoami'
             }
         }
 
@@ -32,16 +33,17 @@ pipeline {
                 sshagent(credentials: ['ssh-server']) {
                     script {
                             OlD_CONTAINER =sh (
-                                script : "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67  docker ps -q",
+                                script : "ssh -o StrictHostKeyChecking=no ubuntu@52.204.203.141  docker ps -q",
                                 returnStdout: true
                             )
                             sh "echo ${OlD_CONTAINER}"
                             try {
-                                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67 docker rm -f ${OlD_CONTAINER}"
+                                sh "ssh -o StrictHostKeyChecking=no ubuntu@52.204.203.141 docker rm -f ${OlD_CONTAINER}"
+                                sh "ssh -o StrictHostKeyChecking=no ubuntu@52.204.203.141 docker rmi -f ntminh/docker-node:v1"
                             } catch (Exception e) {
                                 echo 'Exception occurred: ' + e.toString()
                             } finally {
-                                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.161.94.67 docker run -d -p 3000:3000 ntminh/docker-node:v1"
+                                sh "ssh -o StrictHostKeyChecking=no ubuntu@52.204.203.141 docker run -d -p 3000:3000 ntminh/docker-node:v1"
                             }
                         }
                 }
